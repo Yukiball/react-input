@@ -6,9 +6,7 @@ class Input extends React.Component{
       super(props)
       this.state = {
         value:"",
-        message:'',
         class:'input',
-        type:'text',
 
       }
       this.valueChange = this.valueChange.bind(this)
@@ -22,9 +20,6 @@ class Input extends React.Component{
       this.rep = this.rep.bind(this)
     }
     componentDidMount(){
-      if (this.props.type !== 'text') {
-        this.setState({'type':this.props.type})
-      }
     }
     componentWillUpdate(nextProps,nextState) {
     }
@@ -51,37 +46,33 @@ class Input extends React.Component{
     //是否可以为空
     testEmpty(val){
       if(val === ''){
-        this.setState({'message':'不可为空',class:"input errorinput"}) 
+        this.setState({
+          'message':'不可为空',
+          class:this.props.class+" input errorinput"
+        }) 
         return false
       }else{
-        this.setState({'message':'',class:"input"}) 
+        this.setState({'message':'',class:this.props.class+" input"}) 
         return true
       }
     }
     //用户名
     username(val){
-      let regEn = /[`~!@#$%^&*()+<>?:"{},.\\/;'[\]]/i,//_给去了
-          regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]]/i,
-          space = /\s/g;
+      let regEn = /[`~!@#$%^&*()+<>?:"{},.\\/;'[\]\s]/ig,//_给去了
+          regCn = /[·！#￥（——）：；“”‘、，|《。》？、【】[\]\s]/ig;
       if (!this.props.empty) {
         this.testEmpty(this.state.value)
       }
       if(regEn.test(val) || regCn.test(val)) {
           this.setState({
-            message:"用户名不能包含_以外的特殊字符.",
-            class:"input errorinput"
-          })
-          return false;
-      }else if(space.test(val)) {
-          this.setState({
-            message:"用户名不能包含空格",
-            class:"input errorinput"
+            message:this.props.message,
+            class:this.props.class+" input errorinput"
           })
           return false;
       }else{
           this.setState({
             message:"",
-            class:"input"
+            class:this.props.class+" input"
           })
       }
     }
@@ -101,25 +92,25 @@ class Input extends React.Component{
         }
         if (val.length !== 11) {
           this.setState({
-            message:"请不要输入错误的手机号",
-            class:"input errorinput"
+            message:this.props.message,
+            class:this.props.class+" input errorinput"
           })
         }else{
           this.setState({
             message:"",
-            class:"input"
+            class:this.props.class+" input"
           })
         }
       }else{
         if (val.length === 11 || val.length === 0) {
           this.setState({
             message:"",
-            class:"input"
+            class:this.props.class+" input"
           })
         }else{
           this.setState({
-            message:"请不要输入错误的手机号",
-            class:"input errorinput"
+            message:this.props.message,
+            class:this.props.class+" input errorinput"
           })
         }
       }
@@ -133,24 +124,24 @@ class Input extends React.Component{
         if(reg.test(val)){
           this.setState({
             message:"",
-            class:"input"
+            class:this.props.class+" input"
           })
         }else{
             this.setState({
-              message:"身份证号格式错误或输入错误请重新输入",
-              class:"input errorinput"
+              message:this.props.message,
+              class:this.props.class+" input errorinput"
             })
         }
       }else{
         if(reg.test(val) || val === ''){
           this.setState({
             message:"",
-            class:"input"
+            class:this.props.class+" input"
           })
         }else{
             this.setState({
-              message:"身份证号格式错误或输入错误请重新输入",
-              class:"input errorinput"
+              message:this.props.message,
+              class:this.props.class+" input errorinput"
             })
         }
       }
@@ -166,12 +157,12 @@ class Input extends React.Component{
         if (this.props.func(val)) {
             this.setState({
               message:"",
-              class:"input"
+              class:this.props.class+" input"
             })
         }else{
             this.setState({
-              message:this.props.wrong,
-              class:"input errorinput"
+              message:this.props.message,
+              class:this.props.class+" input errorinput"
             })
         }
       }
@@ -184,9 +175,9 @@ class Input extends React.Component{
       return(
         <React.Fragment>
           <input  className={this.state.class} 
-                  type = {this.state.type} 
+                  type = {this.props.type} 
                   name = {this.props.name}
-                  value = {this.state.value}
+                  value= {this.state.value}
                   onChange = {(e)=>this.valueChange(e.target.value)}
                   onBlur = {()=>this.testUse(this.props.use)}
           />
@@ -201,8 +192,10 @@ class Input extends React.Component{
   }
   Input.defaultProps  = {
     type:'text',
+    message:'',
     empty:true,
-    name:''
+    name:'',
+    class:''
   }
 
   export default Input 

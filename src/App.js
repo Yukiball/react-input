@@ -19,11 +19,11 @@ import './App.css'
         <div className='main'>
           <div className="nav">标题</div>
           <div className="list-box">
-            username：<Input use="username" /><br/>
+            username：<Input use="username" message="用户名不能包含_以外的特殊字符" /><br/>
             password：<Input use="password" type="password" empty={false}/><br/>
-            phone：<Input use="phone"/><br/>
-            idcard：<Input use="idcard"/><br/>
-            auto：<Input use="auto" func={this.auto} wrong="输入错误"/><br/>
+            phone：<Input use="phone" message="请不要输入错误的手机号"/><br/>
+            idcard：<Input use="idcard"  message="身份证号格式错误或输入错误请重新输入"/><br/>
+            auto：<Input use="auto" func={this.auto} message="输入错误"/><br/>
           </div>
         </div>
       )
